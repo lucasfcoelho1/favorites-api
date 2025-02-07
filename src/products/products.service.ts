@@ -2,6 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
 import { firstValueFrom } from 'rxjs'
 import { ConfigService } from '@nestjs/config'
+import { PrismaService } from '@/prisma/prisma.service'
 
 @Injectable()
 export class ProductsService {
@@ -9,7 +10,8 @@ export class ProductsService {
 
   constructor(
     private readonly httpService: HttpService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly prisma: PrismaService
   ) {
     this.API_URL = this.configService.get<string>('API_URL')
   }
@@ -25,6 +27,23 @@ export class ProductsService {
     try {
       const response = await firstValueFrom(this.httpService.get(this.API_URL))
       const products = response.data.slice(0, limit)
+
+      for (const product of products) {
+        await this.prisma.product.upsert({
+          where: { id: product.id },
+          update: {
+            name: product.name,
+            image: product.image,
+            price: product.price,
+          },
+          create: {
+            id: product.id,
+            name: product.name,
+            image: product.image,
+            price: product.price,
+          },
+        })
+      }
 
       return products
     } catch (error) {
