@@ -1,5 +1,6 @@
 @baseUrl = http://localhost:3333
 @authToken = {{authenticate.response.body.access_token}}
+@userId = {{get_all_users.response.body.0.id}}
 
 # @name create_account
 POST {{baseUrl}}/accounts
@@ -7,8 +8,8 @@ Content-Type: application/json
 
 {
   "name": "Lucas Coelho",
-  "email": "lucas@email.com",
-  "password": "123456"
+  "email": "lu@email.com",
+  "passwordHash": "123456"
 }
 
 ###
@@ -18,9 +19,63 @@ POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-  "email": "lucas@email.com.br",
-  "password": "123456"
+  "email": "lu@email.com",
+  "passwordHash": "123456"
 }
 
 ###
 
+# @name get_products
+GET {{baseUrl}}/products
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+
+
+###
+
+# @name delete_user
+DELETE {{baseUrl}}/accounts/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+
+###
+
+# @name get_all_users
+GET {{baseUrl}}/accounts
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name get_user
+GET {{baseUrl}}/accounts/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name create_favorite_list
+POST {{baseUrl}}/favorites/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "title": "Lista de Favoritos",
+  "description": "Lista de favoritos do Lucas"
+}
+
+###
+
+# @name get_favorite_list_user
+GET {{baseUrl}}/favorites/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name delete_favorite_list_user
+DELETE {{baseUrl}}/favorites/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
