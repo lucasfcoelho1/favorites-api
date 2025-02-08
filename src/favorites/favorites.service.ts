@@ -14,6 +14,7 @@ export class FavoritesService {
     title: string,
     description?: string
   ) {
+    console.log('userId', userId)
     const existingList = await this.prisma.favoriteList.findUnique({
       where: { userId },
     })

@@ -2,15 +2,19 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
 import { firstValueFrom } from 'rxjs'
 import { PrismaService } from '@/prisma/prisma.service'
+import { EnvService } from '@/env/env.service'
 
 @Injectable()
 export class ProductsService {
-  private readonly API_URL = 'https://fakestoreapi.com/products'
+  private API_URL: string
 
   constructor(
     private readonly httpService: HttpService,
-    private readonly prisma: PrismaService
-  ) {}
+    private readonly prisma: PrismaService,
+    envService: EnvService
+  ) {
+    this.API_URL = envService.get('PRODUCTS_API_URL')
+  }
 
   async getProducts(userId: string, limit: number = 10): Promise<any> {
     this.validateLimit(limit)
