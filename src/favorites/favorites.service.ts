@@ -9,8 +9,7 @@ import { PrismaService } from '../prisma/prisma.service'
 export class FavoritesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  // cria uma lista se o usuário não tiver uma
-  async createFavoriteList(
+  async createUniqueFavoriteList(
     userId: string,
     title: string,
     description?: string
@@ -25,17 +24,12 @@ export class FavoritesService {
       )
     }
 
-    console.log(userId)
-
     return this.prisma.favoriteList.create({
       data: { userId, title, description },
     })
   }
 
-  // adiciona um produto à lista
-  async addProductToFavorites(userId: string, productId: number) {
-    productId = parseInt(productId as any, 10)
-
+  async addProductToFavorites(userId: string, productId: string) {
     const favoriteList = await this.prisma.favoriteList.findUnique({
       where: { userId },
       include: { favoriteProducts: true },
@@ -64,7 +58,6 @@ export class FavoritesService {
     })
   }
 
-  // retorna a lista de favoritos do usuário
   async getUserFavorites(userId: string) {
     const favoriteList = await this.prisma.favoriteList.findUnique({
       where: { userId },
@@ -78,10 +71,7 @@ export class FavoritesService {
     return favoriteList
   }
 
-  // remove um produto da lista
-  async removeProductFromFavorites(userId: string, productId: number) {
-    productId = parseInt(productId as any, 10)
-
+  async removeProductFromFavorites(userId: string, productId: string) {
     const favoriteList = await this.prisma.favoriteList.findUnique({
       where: { userId },
       include: { favoriteProducts: true },
@@ -103,7 +93,6 @@ export class FavoritesService {
     })
   }
 
-  // apaga a lista e os produtos favoritados
   async deleteFavoriteList(userId: string) {
     const favoriteList = await this.prisma.favoriteList.findUnique({
       where: { userId },

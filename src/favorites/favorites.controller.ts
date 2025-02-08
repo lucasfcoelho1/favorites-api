@@ -13,44 +13,41 @@ import { FavoritesService } from './favorites.service'
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
-  // cria uma lista
   @Post(':userId')
-  async createFavoriteList(
+  async createUniqueFavoriteList(
     @Param('userId') userId: string,
     @Body() body: { title: string; description?: string }
   ) {
-    return this.favoritesService.createFavoriteList(
+    return this.favoritesService.createUniqueFavoriteList(
       userId,
       body.title,
       body.description
     )
   }
 
-  // adiciona um produto
   @Post(':userId/product/:productId')
   async addProductToFavorites(
     @Param('userId') userId: string,
-    @Param('productId', ParseIntPipe) productId: number
+    @Param('productId') productId: string
   ) {
+    console.log('userId', userId)
+    console.log('productId', productId)
     return this.favoritesService.addProductToFavorites(userId, productId)
   }
 
-  // retorna a lista de favoritos
   @Get(':userId')
   async getUserFavorites(@Param('userId') userId: string) {
     return this.favoritesService.getUserFavorites(userId)
   }
 
-  // remove um produto da lista
   @Delete(':userId/product/:productId')
   async removeProductFromFavorites(
     @Param('userId') userId: string,
-    @Param('productId', ParseIntPipe) productId: number
+    @Param('productId') productId: string
   ) {
     return this.favoritesService.removeProductFromFavorites(userId, productId)
   }
 
-  // apaga a lista
   @Delete(':userId')
   async deleteFavoriteList(@Param('userId') userId: string) {
     return this.favoritesService.deleteFavoriteList(userId)

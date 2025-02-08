@@ -26,10 +26,16 @@ Content-Type: application/json
 ###
 
 # @name get_products
-GET {{baseUrl}}/products
+GET {{baseUrl}}/products/user/fdafsd
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
+###
+
+# @name get_products_with_favorites
+GET {{baseUrl}}/products/user/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 
 ###
@@ -75,7 +81,28 @@ Authorization: Bearer {{authToken}}
 
 ###
 
+# @name add_product_to_favorite_list_1
+POST {{baseUrl}}/favorites/{{userId}}/product/0444c4be-1bf4-49eb-a0ea-f42117df5286
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name add_product_to_favorite_list_2
+POST {{baseUrl}}/favorites/{{userId}}/product/0d4d86d6-efbc-47c7-8f75-94225a87a81e
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
 # @name delete_favorite_list_user
 DELETE {{baseUrl}}/favorites/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name delete_all_products
+DELETE {{baseUrl}}/products/
 Content-Type: application/json
 Authorization: Bearer {{authToken}}

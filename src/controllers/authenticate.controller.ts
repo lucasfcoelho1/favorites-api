@@ -35,13 +35,17 @@ export class AuthenticateController {
 
     console.log(email)
     if (!user) {
-      throw new UnauthorizedException('User credentials do not match.')
+      throw new UnauthorizedException(
+        'As credenciais do usuário não correspondem.'
+      )
     }
 
     const isPasswordValid = await compare(passwordHash, user.passwordHash)
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('User credentials do not match.')
+      throw new UnauthorizedException(
+        'As credenciais do usuário não correspondem.'
+      )
     }
 
     const accessToken = this.jwt.sign({ sub: user.id })

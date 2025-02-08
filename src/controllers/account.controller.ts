@@ -62,7 +62,7 @@ export class CreateAccountController {
     })
 
     if (!user) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+      throw new HttpException('Usuario não encontrado', HttpStatus.NOT_FOUND)
     }
 
     return user
@@ -95,7 +95,7 @@ export class CreateAccountController {
       where: { id },
     })
 
-    return { message: 'User deleted successfully' }
+    return { message: 'Usuário deletado com sucesso' }
   }
 
   @Get()
