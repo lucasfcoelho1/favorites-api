@@ -18,7 +18,7 @@ const authenticateBodySchema = z.object({
 
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 
-@Controller('/sessions')
+@Controller('sessions')
 export class AuthenticateController {
   constructor(private prisma: PrismaService, private jwt: JwtService) {}
 
@@ -33,7 +33,6 @@ export class AuthenticateController {
       },
     })
 
-    console.log(email)
     if (!user) {
       throw new UnauthorizedException(
         'As credenciais do usuário não correspondem.'

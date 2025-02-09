@@ -7,10 +7,13 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common'
 import { ProductsService } from './products.service'
+import { AuthGuard } from '@nestjs/passport'
 
 @Controller('/products')
+@UseGuards(AuthGuard('jwt'))
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 

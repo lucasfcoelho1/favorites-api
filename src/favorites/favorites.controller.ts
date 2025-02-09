@@ -6,10 +6,13 @@ import {
   Param,
   Body,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common'
 import { FavoritesService } from './favorites.service'
+import { AuthGuard } from '@nestjs/passport'
 
-@Controller('/favorites')
+@Controller('favorites')
+@UseGuards(AuthGuard('jwt'))
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
@@ -30,8 +33,6 @@ export class FavoritesController {
     @Param('userId') userId: string,
     @Param('productId') productId: string
   ) {
-    console.log('userId', userId)
-    console.log('productId', productId)
     return this.favoritesService.addProductToFavorites(userId, productId)
   }
 

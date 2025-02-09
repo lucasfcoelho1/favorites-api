@@ -10,12 +10,14 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common'
 import { PrismaService } from '@/prisma/prisma.service'
 import { hash } from 'bcryptjs'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/pipes/zod-validation-pipe'
+import { AuthGuard } from '@nestjs/passport'
 
 const createAccountBodySchema = z.object({
   name: z.string(),
@@ -56,6 +58,7 @@ export class CreateAccountController {
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard('jwt'))
   async getUser(@Param('id') id: string) {
     const user = await this.prisma.user.findUnique({
       where: { id },
@@ -69,6 +72,7 @@ export class CreateAccountController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
   async updateUser(
     @Param('id') id: string,
     @Body() body: Partial<CreateAccountBodySchema>
@@ -90,7 +94,18 @@ export class CreateAccountController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async deleteUser(@Param('id') id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    })
+
+    if (!user) {
+      throw new HttpException(
+        'Impossível remover, usuario não encontrado',
+        HttpStatus.NOT_FOUND
+      )
+    }
     await this.prisma.user.delete({
       where: { id },
     })
@@ -99,6 +114,7 @@ export class CreateAccountController {
   }
 
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   async listUsers() {
     const users = await this.prisma.user.findMany()
     return users

@@ -26,7 +26,6 @@ Authorization: Bearer {{authToken}}
 # @name authenticate
 POST {{baseUrl}}/sessions
 Content-Type: application/json
-Authorization: Bearer {{authToken}}
 
 {
   "email": "lu@email.com",

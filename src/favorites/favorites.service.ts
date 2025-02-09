@@ -14,7 +14,6 @@ export class FavoritesService {
     title: string,
     description?: string
   ) {
-    console.log('userId', userId)
     const existingList = await this.prisma.favoriteList.findUnique({
       where: { userId },
     })
@@ -31,10 +30,23 @@ export class FavoritesService {
   }
 
   async addProductToFavorites(userId: string, productId: string) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } })
+    if (!user) {
+      throw new NotFoundException('usuário não encontrado')
+    }
+
     const favoriteList = await this.prisma.favoriteList.findUnique({
       where: { userId },
       include: { favoriteProducts: true },
     })
+
+    const product = await this.prisma.product.findUnique({
+      where: { id: productId },
+    })
+
+    if (!product) {
+      throw new NotFoundException('produto não encontrado')
+    }
 
     if (!favoriteList) {
       throw new NotFoundException('lista não encontrada')
