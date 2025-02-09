@@ -5,6 +5,7 @@ import { ProductsService } from './products.service'
 import { HttpException } from '@nestjs/common'
 import { Prisma } from '@prisma/client'
 import { faker } from '@faker-js/faker'
+import { EnvService } from '@/env/env.service'
 
 describe('ProductsService', () => {
   let service: ProductsService
@@ -28,7 +29,12 @@ describe('ProductsService', () => {
       get: vi.fn(),
     } as unknown as HttpService
 
-    service = new ProductsService(httpService, prisma)
+    const envService = { get: vi.fn() } as unknown as EnvService
+    service = new ProductsService(httpService, prisma, envService)
+  })
+
+  afterEach(() => {
+    vi.clearAllMocks()
   })
 
   it('deve estar definido', () => {
@@ -175,6 +181,7 @@ describe('ProductsService', () => {
 
       const result = await service.deleteAllProducts()
       expect(result).toEqual(deleteResult)
+      expect(prisma.product.deleteMany).toHaveBeenCalled()
     })
   })
 })

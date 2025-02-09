@@ -47,6 +47,13 @@ DELETE {{baseUrl}}/accounts/{{userId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
+###
+
+# @name delete_all_users
+DELETE {{baseUrl}}/accounts
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
 
 ###
 

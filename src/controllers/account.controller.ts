@@ -113,6 +113,13 @@ export class CreateAccountController {
     return { message: 'Usuário deletado com sucesso' }
   }
 
+  @Delete()
+  @UseGuards(AuthGuard('jwt'))
+  async deleteAllUsers() {
+    await this.prisma.user.deleteMany()
+    return { message: 'Todos os usuários foram deletados com sucesso' }
+  }
+
   @Get()
   @UseGuards(AuthGuard('jwt'))
   async listUsers() {
