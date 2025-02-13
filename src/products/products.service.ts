@@ -126,11 +126,8 @@ export class ProductsService {
     limit: number
   ): Promise<any[]> {
     try {
-      console.log('API_URL', this.API_URL)
       const response = await firstValueFrom(this.httpService.get(this.API_URL))
       const products = response.data.slice(0, limit)
-
-      console.log('products', products)
 
       await this.prisma.product.createMany({
         data: products.map((product) => ({
