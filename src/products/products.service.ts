@@ -133,7 +133,7 @@ export class ProductsService {
         data: products.map((product) => ({
           name: product.title,
           image: product.image,
-          price: product.price,
+          price: product.price.toString(),
         })),
       })
 

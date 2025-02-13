@@ -1,8 +1,8 @@
 @baseUrl = http://localhost:4200
 @authToken = {{authenticate.response.body.access_token}}
 @userId = {{get_all_users.response.body.0.id}}
-@productId = {{get_products_with_favorites.response.body.0.id}}
-@productId2 = {{get_products_with_favorites.response.body.1.id}}
+@productId = {{get_products.response.body.0.id}}
+@productId2 = {{get_products.response.body.1.id}}
 
 # @name create_account
 POST {{baseUrl}}/accounts
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 ###
 
-# @name get_products_with_favorites
+# @name get_products
 GET {{baseUrl}}/products/user/{{userId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
@@ -72,7 +72,7 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name create_favorite_list
-POST {{baseUrl}}/favorites/{{userId}}
+POST {{baseUrl}}/favorites/user/{{userId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
@@ -84,7 +84,7 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name get_favorite_list_user
-GET {{baseUrl}}/favorites/{{userId}}
+GET {{baseUrl}}/favorites/user/{{userId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
