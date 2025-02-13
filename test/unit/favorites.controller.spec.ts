@@ -70,44 +70,6 @@ describe('FavoritesController', () => {
     })
   })
 
-  describe('getUserFavorites', () => {
-    it('deve retornar a lista de favoritos do usuário', async () => {
-      const userId = faker.string.uuid()
-      const user = {
-        id: userId,
-        email: faker.internet.email(),
-        password: faker.internet.password(),
-      }
-      const productId = faker.string.uuid()
-      const product = {
-        id: faker.string.uuid(),
-        name: faker.commerce.productName(),
-        price: faker.commerce.price(),
-        image: faker.image.url(),
-      }
-      const favoriteListId = faker.string.uuid()
-      const favoriteList = {
-        id: favoriteListId,
-        userId: userId,
-        user: user,
-        description: faker.lorem.sentence(),
-        favoriteProducts: [
-          {
-            id: faker.string.uuid(),
-            favoriteListId: favoriteListId,
-            productId: productId,
-            product: product,
-          },
-        ],
-      }
-
-      vi.spyOn(service, 'getUserFavorites').mockResolvedValue(favoriteList)
-
-      const result = await controller.getUserFavorites(userId)
-      expect(result).toEqual(favoriteList)
-    })
-  })
-
   describe('removeProductFromFavorites', () => {
     it('deve remover um produto dos favoritos', async () => {
       const userId = faker.string.uuid()

@@ -64,7 +64,7 @@ export class CreateAccountController {
     })
   }
 
-  @Get(':id')
+  @Get('/user/:id')
   @UseGuards(AuthGuard('jwt'))
   async getUser(@Param('id') id: string): Promise<UserSchema> {
     const user = await this.prisma.user.findUnique({
@@ -82,7 +82,7 @@ export class CreateAccountController {
     }
   }
 
-  @Put(':id')
+  @Put('/user/:id')
   @UseGuards(AuthGuard('jwt'))
   async updateUser(
     @Param('id') id: string,
@@ -96,15 +96,23 @@ export class CreateAccountController {
       ...(passwordHash && { passwordHash: await hash(passwordHash, 10) }),
     }
 
-    const user = await this.prisma.user.update({
+    const user = await this.prisma.user.findUnique({
       where: { id },
+    })
+
+    if (!user) {
+      throw new HttpException('Usuario não encontrado', HttpStatus.NOT_FOUND)
+    }
+
+    const updatedUser = await this.prisma.user.update({
+      where: { email },
       data,
     })
 
     return user
   }
 
-  @Delete(':id')
+  @Delete('/user/:id')
   @UseGuards(AuthGuard('jwt'))
   async deleteUser(@Param('id') id: string) {
     const user = await this.prisma.user.findUnique({
