@@ -19,7 +19,7 @@ model User {
 model FavoriteList {
   id               String            @id @default(uuid())
   title            String
-  description      String?
+  description      String
   userId           String            @unique @map("user_id")
   user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   favoriteProducts FavoriteProduct[]
@@ -28,7 +28,7 @@ model FavoriteList {
 model Product {
   id        String            @id @default(uuid())
   name      String
-  price     Decimal
+  price     String
   image     String
   favorites FavoriteProduct[]
 }

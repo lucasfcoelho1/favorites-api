@@ -26,16 +26,6 @@ export class ProductsController {
     return this.productsService.getProducts(userId, limit)
   }
 
-  @Post()
-  async createProduct(@Body() createProductDto: any) {
-    return this.productsService.createProduct(createProductDto)
-  }
-
-  @Put(':id')
-  async updateProduct(@Param('id') id: string, @Body() updateProductDto: any) {
-    return this.productsService.updateProduct(id, updateProductDto)
-  }
-
   @Delete(':id')
   async deleteProduct(@Param('id') id: string) {
     return this.productsService.deleteProduct(id)

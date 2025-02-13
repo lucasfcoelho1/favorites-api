@@ -1,11 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { FavoritesService } from './favorites.service'
-import { PrismaService } from '../prisma/prisma.service'
+import { FavoritesService } from '../../src/favorites/favorites.service'
+import { PrismaService } from '../../src/prisma/prisma.service'
 import { NotFoundException, BadRequestException } from '@nestjs/common'
 import { faker } from '@faker-js/faker'
-import exp from 'constants'
-import { Prisma } from '@prisma/client'
-import { find } from 'rxjs'
 
 describe('FavoritesService', () => {
   let service: FavoritesService
@@ -126,6 +123,17 @@ describe('FavoritesService', () => {
       await expect(
         service.addProductToFavorites(userId, productId)
       ).rejects.toThrow(BadRequestException)
+    })
+
+    it('deve lançar exceção se o usuário não for encontrado', async () => {
+      const userId = faker.string.uuid()
+      const productId = faker.string.uuid()
+
+      prisma.user.findUnique = vi.fn().mockResolvedValue(null)
+
+      await expect(
+        service.addProductToFavorites(userId, productId)
+      ).rejects.toThrow(NotFoundException)
     })
   })
 

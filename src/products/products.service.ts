@@ -3,6 +3,17 @@ import { HttpService } from '@nestjs/axios'
 import { firstValueFrom } from 'rxjs'
 import { PrismaService } from '@/prisma/prisma.service'
 import { EnvService } from '@/env/env.service'
+import { z } from 'zod'
+
+const productSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  image: z.string(),
+  price: z.string(),
+  favorites: z.boolean().optional(),
+})
+
+export type ProductSchema = z.infer<typeof productSchema>
 
 @Injectable()
 export class ProductsService {
@@ -16,7 +27,10 @@ export class ProductsService {
     this.API_URL = envService.get('PRODUCTS_API_URL')
   }
 
-  async getProducts(userId: string, limit: number = 10): Promise<any> {
+  async getProducts(
+    userId: string,
+    limit: number = 10
+  ): Promise<ProductSchema[]> {
     this.validateLimit(limit)
 
     const existingProducts = await this.findProductsInDatabase(userId, limit)
@@ -28,7 +42,7 @@ export class ProductsService {
     return this.fetchAndSaveProductsFromApi(userId, limit)
   }
 
-  async getProductById(id: string, userId: string): Promise<any> {
+  async getProductById(id: string, userId: string): Promise<ProductSchema> {
     const product = await this.prisma.product.findUnique({
       where: { id },
       include: {
@@ -50,36 +64,15 @@ export class ProductsService {
       name: product.name,
       price: product.price,
       image: product.image,
-      isFavorite: product.favorites.length > 0,
+      favorites: product.favorites.length > 0,
     }
-  }
-
-  async createProduct(createProductDto: any): Promise<any> {
-    return this.prisma.product.create({
-      data: createProductDto,
-    })
-  }
-
-  async updateProduct(id: string, updateProductDto: any): Promise<any> {
-    const product = await this.prisma.product.findUnique({
-      where: { id },
-    })
-
-    if (!product) {
-      throw new HttpException('Produto não encontrado', HttpStatus.NOT_FOUND)
-    }
-
-    return this.prisma.product.update({
-      where: { id },
-      data: updateProductDto,
-    })
   }
 
   async deleteAllProducts(): Promise<any> {
     return this.prisma.product.deleteMany({})
   }
 
-  async deleteProduct(id: string): Promise<any> {
+  async deleteProduct(id: string): Promise<ProductSchema> {
     const product = await this.prisma.product.findUnique({
       where: { id },
     })
@@ -102,32 +95,10 @@ export class ProductsService {
     }
   }
 
-  async getAllProductsWithFavorites(userId: string): Promise<any> {
-    const products = await this.prisma.product.findMany({
-      include: {
-        favorites: {
-          where: {
-            favoriteList: {
-              userId: userId,
-            },
-          },
-        },
-      },
-    })
-
-    return products.map((product) => ({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      isFavorite: product.favorites.length > 0,
-    }))
-  }
-
   private async findProductsInDatabase(
     userId: string,
     limit: number
-  ): Promise<any[]> {
+  ): Promise<ProductSchema[]> {
     const products = await this.prisma.product.findMany({
       take: limit,
       include: {
@@ -155,8 +126,11 @@ export class ProductsService {
     limit: number
   ): Promise<any[]> {
     try {
+      console.log('API_URL', this.API_URL)
       const response = await firstValueFrom(this.httpService.get(this.API_URL))
       const products = response.data.slice(0, limit)
+
+      console.log('products', products)
 
       await this.prisma.product.createMany({
         data: products.map((product) => ({

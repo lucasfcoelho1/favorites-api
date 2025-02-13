@@ -25,6 +25,13 @@ const createAccountBodySchema = z.object({
   passwordHash: z.string(),
 })
 
+const userSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string().email(),
+})
+
+export type UserSchema = z.infer<typeof userSchema>
 type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
 
 @Controller('accounts')
@@ -59,7 +66,7 @@ export class CreateAccountController {
 
   @Get(':id')
   @UseGuards(AuthGuard('jwt'))
-  async getUser(@Param('id') id: string) {
+  async getUser(@Param('id') id: string): Promise<UserSchema> {
     const user = await this.prisma.user.findUnique({
       where: { id },
     })
@@ -68,7 +75,11 @@ export class CreateAccountController {
       throw new HttpException('Usuario não encontrado', HttpStatus.NOT_FOUND)
     }
 
-    return user
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    }
   }
 
   @Put(':id')

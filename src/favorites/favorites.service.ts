@@ -4,6 +4,60 @@ import {
   BadRequestException,
 } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
+import { z } from 'zod'
+
+const favoriteSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  title: z.string(),
+  description: z.string(),
+  favoriteProducts: z
+    .array(
+      z.object({
+        id: z.string(),
+        favoriteListId: z.string(),
+        productId: z.string(),
+        product: z.object({
+          id: z.string(),
+          name: z.string(),
+          image: z.string(),
+          price: z.string(),
+        }),
+      })
+    )
+    .optional(),
+})
+
+const favoriteProductSchema = z.object({
+  id: z.string(),
+  favoriteListId: z.string(),
+  productId: z.string(),
+  product: z
+    .object({
+      id: z.string(),
+      name: z.string(),
+      image: z.string(),
+      price: z.string(),
+    })
+    .optional(),
+  favoriteProducts: z
+    .array(
+      z.object({
+        id: z.string(),
+        favoriteListId: z.string(),
+        productId: z.string(),
+        product: z.object({
+          id: z.string(),
+          name: z.string(),
+          image: z.string(),
+          price: z.string(),
+        }),
+      })
+    ).optional(),
+})
+
+export type FavoriteProductSchema = z.infer<typeof favoriteProductSchema>
+export type FavoriteSchema = z.infer<typeof favoriteSchema>
 
 @Injectable()
 export class FavoritesService {
@@ -12,8 +66,8 @@ export class FavoritesService {
   async createUniqueFavoriteList(
     userId: string,
     title: string,
-    description?: string
-  ) {
+    description: string
+  ): Promise<FavoriteSchema> {
     const existingList = await this.prisma.favoriteList.findUnique({
       where: { userId },
     })
@@ -29,7 +83,10 @@ export class FavoritesService {
     })
   }
 
-  async addProductToFavorites(userId: string, productId: string) {
+  async addProductToFavorites(
+    userId: string,
+    productId: string
+  ): Promise<FavoriteProductSchema> {
     const user = await this.prisma.user.findUnique({ where: { id: userId } })
     if (!user) {
       throw new NotFoundException('usuário não encontrado')
@@ -71,7 +128,7 @@ export class FavoritesService {
     })
   }
 
-  async getUserFavorites(userId: string) {
+  async getUserFavorites(userId: string): Promise<FavoriteSchema> {
     const favoriteList = await this.prisma.favoriteList.findUnique({
       where: { userId },
       include: { favoriteProducts: { include: { product: true } } },
@@ -81,10 +138,26 @@ export class FavoritesService {
       throw new NotFoundException('lista não encontrada')
     }
 
-    return favoriteList
+    favoriteList.favoriteProducts = favoriteList.favoriteProducts || []
+
+    return {
+      id: favoriteList.id,
+      userId: favoriteList.userId,
+      title: favoriteList.title,
+      description: favoriteList.description,
+      favoriteProducts: favoriteList.favoriteProducts.map((fav) => ({
+        id: fav.id,
+        favoriteListId: fav.favoriteListId,
+        productId: fav.productId,
+        product: fav.product,
+      })),
+    }
   }
 
-  async removeProductFromFavorites(userId: string, productId: string) {
+  async removeProductFromFavorites(
+    userId: string,
+    productId: string
+  ): Promise<FavoriteProductSchema> {
     const favoriteList = await this.prisma.favoriteList.findUnique({
       where: { userId },
       include: { favoriteProducts: true },
@@ -106,7 +179,7 @@ export class FavoritesService {
     })
   }
 
-  async deleteFavoriteList(userId: string) {
+  async deleteFavoriteList(userId: string): Promise<FavoriteSchema> {
     const favoriteList = await this.prisma.favoriteList.findUnique({
       where: { userId },
     })

@@ -1,11 +1,13 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { HttpService } from '@nestjs/axios'
 import { PrismaService } from '@/prisma/prisma.service'
-import { ProductsService } from './products.service'
-import { HttpException } from '@nestjs/common'
+import { ProductsService } from '../../src/products/products.service'
+import { HttpException, HttpStatus } from '@nestjs/common'
 import { Prisma } from '@prisma/client'
+import axios from 'axios'
 import { faker } from '@faker-js/faker'
 import { EnvService } from '@/env/env.service'
+import { env } from 'process'
 
 describe('ProductsService', () => {
   let service: ProductsService
@@ -46,7 +48,7 @@ describe('ProductsService', () => {
       const userId = faker.string.uuid()
       const productId = faker.string.uuid()
       const productName = faker.commerce.productName()
-      const productPrice = new Prisma.Decimal(faker.commerce.price())
+      const productPrice = faker.commerce.price()
       const productImage = faker.image.url()
       const product = {
         id: productId,
@@ -63,7 +65,7 @@ describe('ProductsService', () => {
         name: product.name,
         price: product.price,
         image: product.image,
-        isFavorite: product.favorites.length > 0,
+        favorites: product.favorites.length > 0,
       })
     })
 
@@ -71,7 +73,7 @@ describe('ProductsService', () => {
       const userId = faker.string.uuid()
       const productId = faker.string.uuid()
       const productName = faker.commerce.productName()
-      const productPrice = new Prisma.Decimal(faker.commerce.price())
+      const productPrice = faker.commerce.price()
       const productImage = faker.image.url()
       const product = {
         id: productId,
@@ -88,7 +90,7 @@ describe('ProductsService', () => {
         name: product.name,
         price: product.price,
         image: product.image,
-        isFavorite: product.favorites.length > 0,
+        favorites: product.favorites.length > 0,
       })
     })
 
@@ -103,65 +105,21 @@ describe('ProductsService', () => {
     })
   })
 
-  describe('createProduct', () => {
-    it('deve criar um novo produto', async () => {
-      const storedProductId = faker.string.uuid()
-      const createProductDto = {
+  describe('deleteProduct', () => {
+    it('deve deletar um produto existente', async () => {
+      const productId = faker.string.uuid()
+      const product = {
+        id: productId,
         name: faker.commerce.productName(),
-        price: new Prisma.Decimal(faker.commerce.price()),
+        price: faker.commerce.price(),
         image: faker.image.url(),
       }
-      const createdProduct = { id: storedProductId, ...createProductDto }
-      vi.spyOn(prisma.product, 'create').mockResolvedValue(createdProduct)
 
-      const result = await service.createProduct(createProductDto)
-      expect(result).toEqual(createdProduct)
-    })
-  })
+      vi.spyOn(prisma.product, 'findUnique').mockResolvedValue(product)
+      vi.spyOn(prisma.product, 'delete').mockResolvedValue(product)
 
-  describe('updateProduct', () => {
-    const storedProductId = faker.string.uuid()
-    const updateProductDto = {
-      name: faker.commerce.productName(),
-      price: new Prisma.Decimal(faker.commerce.price()),
-      image: faker.image.url(),
-    }
-    it('deve atualizar um produto existente', async () => {
-      const updatedProduct = { id: storedProductId, ...updateProductDto }
-      vi.spyOn(prisma.product, 'findUnique').mockResolvedValue(updatedProduct)
-      vi.spyOn(prisma.product, 'update').mockResolvedValue(updatedProduct)
-
-      const result = await service.updateProduct(
-        storedProductId,
-        updateProductDto
-      )
-      expect(result).toEqual(updatedProduct)
-    })
-
-    it('deve lançar uma exceção se o produto não for encontrado', async () => {
-      const invalidProductId = faker.string.uuid()
-      vi.spyOn(prisma.product, 'findUnique').mockResolvedValue(null)
-
-      await expect(
-        service.updateProduct(invalidProductId, updateProductDto)
-      ).rejects.toThrow(HttpException)
-    })
-  })
-
-  describe('deleteProduct', () => {
-    const storedProductId = faker.string.uuid()
-    const storedProduct = {
-      id: storedProductId,
-      name: faker.commerce.productName(),
-      price: new Prisma.Decimal(faker.commerce.price()),
-      image: faker.image.url(),
-    }
-    it('deve deletar um produto existente', async () => {
-      vi.spyOn(prisma.product, 'findUnique').mockResolvedValue(storedProduct)
-      vi.spyOn(prisma.product, 'delete').mockResolvedValue(storedProduct)
-
-      const result = await service.deleteProduct(storedProductId)
-      expect(result).toEqual(storedProduct)
+      const result = await service.deleteProduct(productId)
+      expect(result).toEqual(product)
     })
 
     it('deve lançar uma exceção se o produto não for encontrado', async () => {
@@ -182,6 +140,64 @@ describe('ProductsService', () => {
       const result = await service.deleteAllProducts()
       expect(result).toEqual(deleteResult)
       expect(prisma.product.deleteMany).toHaveBeenCalled()
+    })
+  })
+
+  describe('getProducts', () => {
+    it('deve retornar um array de produtos', async () => {
+      const userId = faker.string.uuid()
+      const productId = faker.string.uuid()
+      const product = [
+        {
+          id: productId,
+          name: faker.commerce.productName(),
+          price: faker.commerce.price(),
+          image: faker.image.url(),
+          isFavorite: false,
+        },
+      ]
+      vi.spyOn(prisma.product, 'findMany').mockResolvedValue(product)
+
+      expect(await service.getProducts(userId)).toStrictEqual(product)
+    })
+
+    it('deve retornar um array de produtos favoritados', async () => {
+      const userId = faker.string.uuid()
+      const productId = faker.string.uuid()
+      const product = [
+        {
+          id: productId,
+          name: faker.commerce.productName(),
+          price: faker.commerce.price(),
+          image: faker.image.url(),
+          isFavorite: false,
+        },
+      ]
+      vi.spyOn(prisma.product, 'findMany').mockResolvedValue(product)
+
+      expect(await service.getProducts(userId)).toStrictEqual(product)
+    })
+
+    it('deve lançar uma exceção se a lista de produtos estiver vazia', async () => {
+      const userId = faker.string.uuid()
+      vi.spyOn(prisma.product, 'findMany').mockResolvedValue([])
+
+      await expect(service.getProducts(userId)).rejects.toThrow(HttpException)
+    })
+  })
+
+  describe('validateLimit', () => {
+    it('deve lançar uma exceção se o limite for maior que 100', () => {
+      expect(() => service['validateLimit'](101)).toThrow(
+        new HttpException(
+          'Limit não pode ser maior do que 100',
+          HttpStatus.BAD_REQUEST
+        )
+      )
+    })
+
+    it('não deve lançar uma exceção se o limite for menor ou igual a 100', () => {
+      expect(() => service['validateLimit'](100)).not.toThrow()
     })
   })
 })

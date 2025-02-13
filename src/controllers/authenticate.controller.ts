@@ -35,7 +35,7 @@ export class AuthenticateController {
 
     if (!user) {
       throw new UnauthorizedException(
-        'As credenciais do usuário não correspondem.'
+        'As credenciais do usuário não correspondem. [email]'
       )
     }
 
@@ -43,7 +43,7 @@ export class AuthenticateController {
 
     if (!isPasswordValid) {
       throw new UnauthorizedException(
-        'As credenciais do usuário não correspondem.'
+        'As credenciais do usuário não correspondem. [senha]'
       )
     }
 
