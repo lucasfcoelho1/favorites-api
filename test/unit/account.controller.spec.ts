@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { CreateAccountController } from '@/controllers/account.controller'
-import { PrismaService } from '@/prisma/prisma.service'
+import { CreateAccountController } from '@/infra/http/controllers/account.controller'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { hash } from 'bcryptjs'
 import { ConflictException, HttpException, HttpStatus } from '@nestjs/common'
 import { faker } from '@faker-js/faker'

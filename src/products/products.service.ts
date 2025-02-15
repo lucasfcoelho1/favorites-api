@@ -1,7 +1,7 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
 import { firstValueFrom } from 'rxjs'
-import { PrismaService } from '@/prisma/prisma.service'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { EnvService } from '@/env/env.service'
 import { z } from 'zod'
 

@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 import request from 'supertest'
 import { AppModule } from '../../src/app.module'
-import { PrismaService } from '../../src/prisma/prisma.service'
+import { PrismaService } from '../../src/infra/database/prisma/prisma.service'
 import { JwtService } from '@nestjs/jwt'
 
 describe('Favorites (E2E)', () => {

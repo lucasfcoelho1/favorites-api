@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { PrismaService } from '@/prisma/prisma.service'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { PrismaClient } from '@prisma/client'
 
 describe('PrismaService', () => {

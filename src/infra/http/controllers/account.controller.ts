@@ -13,10 +13,10 @@ import {
   UseGuards,
   UsePipes,
 } from '@nestjs/common'
-import { PrismaService } from '@/prisma/prisma.service'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { hash } from 'bcryptjs'
 import { z } from 'zod'
-import { ZodValidationPipe } from '@/pipes/zod-validation-pipe'
+import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { AuthGuard } from '@nestjs/passport'
 
 const createAccountBodySchema = z.object({

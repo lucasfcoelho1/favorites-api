@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { FavoritesService } from '../../src/favorites/favorites.service'
-import { PrismaService } from '../../src/prisma/prisma.service'
+import { PrismaService } from '../../src/infra/database/prisma/prisma.service'
 import { NotFoundException, BadRequestException } from '@nestjs/common'
 import { faker } from '@faker-js/faker'
 

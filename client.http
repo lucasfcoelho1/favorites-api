@@ -65,7 +65,7 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name get_user
-GET {{baseUrl}}/accounts/{{userId}}
+GET {{baseUrl}}/accounts/user/{{userId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 

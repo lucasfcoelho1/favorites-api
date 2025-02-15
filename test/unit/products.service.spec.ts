@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { HttpService } from '@nestjs/axios'
-import { PrismaService } from '@/prisma/prisma.service'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { ProductsService } from '../../src/products/products.service'
 import { HttpException, HttpStatus } from '@nestjs/common'
 import { Prisma } from '@prisma/client'

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { ProductsController } from '../../src/products/products.controller'
 import { ProductsService } from '../../src/products/products.service'
-import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
+import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { faker } from '@faker-js/faker'
 
 describe('ProductsController', () => {

@@ -3,7 +3,7 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common'
-import { PrismaService } from '../prisma/prisma.service'
+import { PrismaService } from '../infra/database/prisma/prisma.service'
 import { z } from 'zod'
 
 const favoriteSchema = z.object({
@@ -53,7 +53,8 @@ const favoriteProductSchema = z.object({
           price: z.string(),
         }),
       })
-    ).optional(),
+    )
+    .optional(),
 })
 
 export type FavoriteProductSchema = z.infer<typeof favoriteProductSchema>
