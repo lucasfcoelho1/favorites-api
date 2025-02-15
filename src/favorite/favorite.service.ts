@@ -61,7 +61,7 @@ export type FavoriteProductSchema = z.infer<typeof favoriteProductSchema>
 export type FavoriteSchema = z.infer<typeof favoriteSchema>
 
 @Injectable()
-export class FavoritesService {
+export class FavoriteService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createUniqueFavoriteList(

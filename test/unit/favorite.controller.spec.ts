@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { FavoritesController } from '@/favorites/favorites.controller'
-import { FavoritesService } from '@/favorites/favorites.service'
 import { faker } from '@faker-js/faker'
+import { FavoriteController } from '@/infra/http/controllers/favorite.controller'
+import { FavoriteService } from '@/favorite/favorite.service'
 
-describe('FavoritesController', () => {
-  let controller: FavoritesController
-  let service: FavoritesService
+describe('FavoriteController', () => {
+  let controller: FavoriteController
+  let service: FavoriteService
 
   beforeEach(() => {
     service = {
@@ -14,9 +14,9 @@ describe('FavoritesController', () => {
       getUserFavorites: vi.fn(),
       removeProductFromFavorites: vi.fn(),
       deleteFavoriteList: vi.fn(),
-    } as unknown as FavoritesService
+    } as unknown as FavoriteService
 
-    controller = new FavoritesController(service)
+    controller = new FavoriteController(service)
   })
 
   afterEach(() => {

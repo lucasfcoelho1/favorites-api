@@ -5,11 +5,11 @@ import { envSchema } from '@/env/env'
 import { AuthModule } from './infra/auth/auth.module'
 import { CreateAccountController } from './infra/http/controllers/account.controller'
 import { AuthenticateController } from './infra/http/controllers/authenticate.controller'
-import { ProductsModule } from './products/products.module'
-import { FavoritesModule } from './favorites/favorites.module'
-import { FavoritesController } from './favorites/favorites.controller'
-import { FavoritesService } from './favorites/favorites.service'
+import { ProductModule } from './product/product.module'
 import { EnvModule } from './env/env.module'
+import { FavoriteModule } from './favorite/favorite.module'
+import { FavoriteController } from './infra/http/controllers/favorite.controller'
+import { FavoriteService } from './favorite/favorite.service'
 
 @Module({
   imports: [
@@ -18,15 +18,15 @@ import { EnvModule } from './env/env.module'
       isGlobal: true,
     }),
     AuthModule,
-    ProductsModule,
-    FavoritesModule,
+    ProductModule,
+    FavoriteModule,
     EnvModule,
   ],
   controllers: [
     CreateAccountController,
     AuthenticateController,
-    FavoritesController,
+    FavoriteController,
   ],
-  providers: [PrismaService, FavoritesService],
+  providers: [PrismaService, FavoriteService],
 })
 export class AppModule {}

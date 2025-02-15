@@ -1,16 +1,16 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { FavoritesService } from '../../src/favorites/favorites.service'
 import { PrismaService } from '../../src/infra/database/prisma/prisma.service'
 import { NotFoundException, BadRequestException } from '@nestjs/common'
 import { faker } from '@faker-js/faker'
+import { FavoriteService } from '@/favorite/favorite.service'
 
-describe('FavoritesService', () => {
-  let service: FavoritesService
+describe('FavoriteService', () => {
+  let service: FavoriteService
   let prisma: PrismaService
 
   beforeEach(() => {
     prisma = new PrismaService()
-    service = new FavoritesService(prisma)
+    service = new FavoriteService(prisma)
   })
 
   afterEach(() => {

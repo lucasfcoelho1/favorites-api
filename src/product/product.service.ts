@@ -16,7 +16,7 @@ const productSchema = z.object({
 export type ProductSchema = z.infer<typeof productSchema>
 
 @Injectable()
-export class ProductsService {
+export class ProductService {
   private API_URL: string
 
   constructor(

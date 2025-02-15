@@ -72,7 +72,7 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name create_favorite_list
-POST {{baseUrl}}/favorites/user/{{userId}}
+POST {{baseUrl}}/favorite/user/{{userId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
@@ -84,28 +84,28 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name get_favorite_list_user
-GET {{baseUrl}}/favorites/user/{{userId}}
+GET {{baseUrl}}/favorite/user/{{userId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 ###
 
 # @name add_product_to_favorite_list_1
-POST {{baseUrl}}/favorites/{{userId}}/product/{{productId}}
+POST {{baseUrl}}/favorite/{{userId}}/product/{{productId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 ###
 
 # @name add_product_to_favorite_list_2
-POST {{baseUrl}}/favorites/{{userId}}/product/{{productId2}}
+POST {{baseUrl}}/favorite/{{userId}}/product/{{productId2}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 ###
 
 # @name delete_favorite_list_user
-DELETE {{baseUrl}}/favorites/{{userId}}
+DELETE {{baseUrl}}/favorite/{{userId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 

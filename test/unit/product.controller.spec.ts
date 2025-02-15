@@ -1,12 +1,13 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { ProductsController } from '../../src/products/products.controller'
-import { ProductsService } from '../../src/products/products.service'
+
+import { ProductService } from '../../src/product/product.service'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { faker } from '@faker-js/faker'
+import { ProductController } from '@/infra/http/controllers/product.controller'
 
-describe('ProductsController', () => {
-  let controller: ProductsController
-  let service: ProductsService
+describe('ProductController', () => {
+  let controller: ProductController
+  let service: ProductService
   let jwtAuthGuard: JwtAuthGuard
 
   beforeEach(() => {
@@ -16,13 +17,13 @@ describe('ProductsController', () => {
       updateProduct: vi.fn(),
       deleteProduct: vi.fn(),
       deleteAllProducts: vi.fn(),
-    } as unknown as ProductsService
+    } as unknown as ProductService
 
     jwtAuthGuard = {
       canActivate: vi.fn(() => true),
     } as unknown as JwtAuthGuard
 
-    controller = new ProductsController(service)
+    controller = new ProductController(service)
   })
 
   afterEach(() => {

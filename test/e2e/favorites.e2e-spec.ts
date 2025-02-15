@@ -57,7 +57,7 @@ describe('Favorites (E2E)', () => {
       },
     })
     const response = await request(app.getHttpServer())
-      .post(`/favorites/user/${user?.id}`)
+      .post(`/favorite/user/${user?.id}`)
       .set('Authorization', `Bearer ${authToken}`)
       .send({
         title: 'Lista de Favoritos',
@@ -100,7 +100,7 @@ describe('Favorites (E2E)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .post(`/favorites/${user?.id}/product/${product.id}`)
+      .post(`/favorite/${user?.id}/product/${product.id}`)
       .set('Authorization', `Bearer ${authToken}`)
       .send({
         userId: user?.id,
@@ -114,7 +114,7 @@ describe('Favorites (E2E)', () => {
 
   it('should return 404 when trying to get a non-existent favorite list', async () => {
     const response = await request(app.getHttpServer())
-      .get(`/favorites/user/worng-user-id`)
+      .get(`/favorite/user/worng-user-id`)
       .set('Authorization', `Bearer ${authToken}`)
 
     expect(response.status).toBe(404)

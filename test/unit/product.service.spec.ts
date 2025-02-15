@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { HttpService } from '@nestjs/axios'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
-import { ProductsService } from '../../src/products/products.service'
+import { ProductService } from '../../src/product/product.service'
 import { HttpException, HttpStatus } from '@nestjs/common'
 import { Prisma } from '@prisma/client'
 import axios from 'axios'
@@ -9,8 +9,8 @@ import { faker } from '@faker-js/faker'
 import { EnvService } from '@/env/env.service'
 import { env } from 'process'
 
-describe('ProductsService', () => {
-  let service: ProductsService
+describe('ProductService', () => {
+  let service: ProductService
   let prisma: PrismaService
   let httpService: HttpService
 
@@ -32,7 +32,7 @@ describe('ProductsService', () => {
     } as unknown as HttpService
 
     const envService = { get: vi.fn() } as unknown as EnvService
-    service = new ProductsService(httpService, prisma, envService)
+    service = new ProductService(httpService, prisma, envService)
   })
 
   afterEach(() => {

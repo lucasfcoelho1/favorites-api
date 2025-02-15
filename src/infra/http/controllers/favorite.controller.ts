@@ -8,20 +8,20 @@ import {
   ParseIntPipe,
   UseGuards,
 } from '@nestjs/common'
-import { FavoritesService } from './favorites.service'
+import { FavoriteService } from '../../../favorite/favorite.service'
 import { AuthGuard } from '@nestjs/passport'
 
-@Controller('favorites')
+@Controller('favorite')
 @UseGuards(AuthGuard('jwt'))
-export class FavoritesController {
-  constructor(private readonly favoritesService: FavoritesService) {}
+export class FavoriteController {
+  constructor(private readonly FavoriteService: FavoriteService) {}
 
   @Post('/user/:userId')
   async createUniqueFavoriteList(
     @Param('userId') userId: string,
     @Body() body: { title: string; description: string }
   ) {
-    return this.favoritesService.createUniqueFavoriteList(
+    return this.FavoriteService.createUniqueFavoriteList(
       userId,
       body.title,
       body.description
@@ -33,12 +33,12 @@ export class FavoritesController {
     @Param('userId') userId: string,
     @Param('productId') productId: string
   ) {
-    return this.favoritesService.addProductToFavorites(userId, productId)
+    return this.FavoriteService.addProductToFavorites(userId, productId)
   }
 
   @Get('/user/:userId')
   async getUserFavorites(@Param('userId') userId: string) {
-    return this.favoritesService.getUserFavorites(userId)
+    return this.FavoriteService.getUserFavorites(userId)
   }
 
   @Delete(':userId/product/:productId')
@@ -46,11 +46,11 @@ export class FavoritesController {
     @Param('userId') userId: string,
     @Param('productId') productId: string
   ) {
-    return this.favoritesService.removeProductFromFavorites(userId, productId)
+    return this.FavoriteService.removeProductFromFavorites(userId, productId)
   }
 
   @Delete(':userId')
   async deleteFavoriteList(@Param('userId') userId: string) {
-    return this.favoritesService.deleteFavoriteList(userId)
+    return this.FavoriteService.deleteFavoriteList(userId)
   }
 }

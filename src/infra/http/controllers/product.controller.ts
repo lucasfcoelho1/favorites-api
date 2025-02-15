@@ -1,3 +1,4 @@
+import { ProductService } from '@/product/product.service'
 import {
   Body,
   Controller,
@@ -9,30 +10,29 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common'
-import { ProductsService } from './products.service'
+
 import { AuthGuard } from '@nestjs/passport'
 
 @Controller('/products')
 @UseGuards(AuthGuard('jwt'))
-export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+export class ProductController {
+  constructor(private readonly ProductService: ProductService) {}
 
-  //procurar offset
   @Get('/user/:userId')
   async getProducts(
     @Param('userId') userId: string,
     @Query('limit') limit?: number
   ) {
-    return this.productsService.getProducts(userId, limit)
+    return this.ProductService.getProducts(userId, limit)
   }
 
   @Delete(':id')
   async deleteProduct(@Param('id') id: string) {
-    return this.productsService.deleteProduct(id)
+    return this.ProductService.deleteProduct(id)
   }
 
   @Delete()
   async deleteAllProducts() {
-    return this.productsService.deleteAllProducts()
+    return this.ProductService.deleteAllProducts()
   }
 }
