@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:4200
 @authToken = {{authenticate.response.body.access_token}}
-@userId = {{get_all_users.response.body.0.id}}
+@userId = {{authenticate.response.body.user.id}}
 @productId = {{get_products.response.body.0.id}}
 @productId2 = {{get_products.response.body.1.id}}
 

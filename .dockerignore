@@ -1,6 +1,6 @@
 # Node modules
-#node_modules
-#node_modules/**
+node_modules
+node_modules/**
 
 # Logs
 logs
@@ -20,8 +20,8 @@ jspm_packages/
 .env.production.local
 
 # Build output
-#dist
-#build
+dist
+build
 
 # Docker files
 Dockerfile
