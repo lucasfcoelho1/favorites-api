@@ -1,16 +1,17 @@
-name: Continuos Integration
-on: pull_request
+name: Github Continuos Integration
+on: [pull_request, push]
 jobs:
-  continuos-integration:
+  run-tests-ci:
     runs-on: ubuntu-latest
-    steps:  
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Setup environment
         uses: actions/setup-node@v2
       - name: Install, Build and Test
         run: |
-          npm install -g pnpm 
-          pnpm install
+          npm i -g pnpm 
+          pnpm install --force --no-frozen-lockfile
+          pnpm prisma generate
+          pnpm run build
           pnpm test
-    

@@ -1,5 +1,7 @@
 # Favorites API
 
+![GitHub Actions Status](https://github.com/lucasfcoelho1/favorites-api/actions/workflows/workflow.yaml/badge.svg)
+
 ## Índice
 
 - [Executando a Aplicação com Docker Compose](#executando-a-aplicação-com-docker-compose)
