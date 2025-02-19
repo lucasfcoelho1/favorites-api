@@ -4,6 +4,7 @@
 
 ## Índice
 
+- [Bibliotecas Principais](#bibliotecas-principais)
 - [Executando a Aplicação com Docker Compose](#executando-a-aplicação-com-docker-compose)
 - [Documentação da API](#documentação-da-api)
 - [Testes e Cobertura de Código](#testes-e-cobertura-de-código)
@@ -14,6 +15,19 @@
   - [Favoritos](#favoritos)
   - [Produtos](#produtos)
 
+## Bibliotecas Principais
+
+Este projeto utiliza as seguintes bibliotecas principais:
+
+- **[NestJS](https://nestjs.com/)**: Um framework para construir aplicações Node.js eficientes e escaláveis.
+- **[Prisma](https://www.prisma.io/)**: Um ORM moderno para Node.js e TypeScript.
+- **[Swagger](https://swagger.io/)**: Documentação da API.
+- **[JWT](https://jwt.io/)**: JSON Web Tokens para autenticação.
+- **[Bcrypt](https://www.npmjs.com/package/bcrypt)**: Biblioteca para hashing de senhas.
+- **[Vitest](https://vitest.dev/)**: Framework de testes unitários e E2E.
+- **[Supertest](https://www.npmjs.com/package/supertest)**: Biblioteca para testes E2E.
+- **[Zod](https://www.npmjs.com/package/zod)**: Validador de Schema em TypeScript
+- **[Docker](https://www.docker.com/)**: Plataforma para containerização de aplicações.
 
 ## Executando a Aplicação com Docker Compose
 
@@ -46,7 +60,6 @@ Para executar a aplicação, você precisará ter o Docker 🐳 instalado na sua
 
 A documentação completa com Swagger da API está disponível em `http://localhost:4200/api`.
 
-
 ## Testes e Cobertura de Código
 
 ### Testes
@@ -77,10 +90,10 @@ Toda vez que é executado os resultados da última execução dos testes com cob
 ['/coverage/index.html': Abra-o na sua máquina](/coverage/index.html)
 
 ## Testando a API com Extensão RestClient ♥️ E2E
+
 Recomendo testar a API utilizando a pasta `http-request-e2e/`, onde estão disponíveis os fluxos que podem ser feitos na API. Esta pasta contém exemplos de requisições HTTP que podem ser usadas para testar os endpoints da API.
 
 Para utilizar esses exemplos, você pode usar uma ferramenta como o VS [Code REST Client [Recomendado]](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) ou o [Postman](https://www.postman.com/downloads/).
-
 
 ## Estrutura do Banco de Dados
 
@@ -284,5 +297,3 @@ A aplicação utiliza um banco de dados PostgreSQL com as seguintes tabelas e re
 - **Autenticação**: Bearer Token
 - **Respostas**:
   - `200`: Todos os produtos foram deletados com sucesso.
-
-
