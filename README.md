@@ -305,3 +305,4 @@ Os testes foram escritos utilizando o framework [Vitest](https://vitest.dev/). P
 Toda vez que é executado os resultados da última execução dos testes com cobertura de código são dispostos no terminal e também são salvos em um arquivo em:
 
 ['/coverage/index.html': Abra-o na sua máquina](/coverage/index.html)
+
