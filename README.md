@@ -5,15 +5,15 @@
 ## Índice
 
 - [Executando a Aplicação com Docker Compose](#executando-a-aplicação-com-docker-compose)
-- [Executando a Aplicação Localmente](#executando-a-aplicação-localmente)
 - [Documentação da API](#documentação-da-api)
+- [Testes e Cobertura de Código](#testes-e-cobertura-de-código)
 - [Estrutura do Banco de Dados](#estrutura-do-banco-de-dados)
 - [Endpoints da API](#endpoints-da-api)
   - [Autenticação](#autenticação)
   - [Contas](#contas)
   - [Favoritos](#favoritos)
   - [Produtos](#produtos)
-- [Testes e Cobertura de Código](#testes-e-cobertura-de-código)
+
 
 ## Executando a Aplicação com Docker Compose
 
@@ -76,35 +76,11 @@ Toda vez que é executado os resultados da última execução dos testes com cob
 
 ['/coverage/index.html': Abra-o na sua máquina](/coverage/index.html)
 
-### Executando a Aplicação Localmente
+## Testando a API com Extensão RestClient ♥️ E2E
+Recomendo testar a API utilizando a pasta `http-request-e2e/`, onde estão disponíveis os fluxos que podem ser feitos na API. Esta pasta contém exemplos de requisições HTTP que podem ser usadas para testar os endpoints da API.
 
-Se você preferir executar a aplicação diretamente na sua máquina, siga os passos abaixo. Recomendo fortemente o uso do `pnpm` para gerenciar as dependências.
+Para utilizar esses exemplos, você pode usar uma ferramenta como o VS [Code REST Client [Recomendado]](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) ou o [Postman](https://www.postman.com/downloads/).
 
-1. Instale o `pnpm` globalmente, se ainda não tiver:
-
-   ```sh
-   npm install -g pnpm
-   ```
-
-2. Instale as dependências do projeto:
-
-   ```sh
-   pnpm install
-   ```
-
-3. Execute as migrações do banco de dados:
-
-   ```sh
-   pnpm db:deploy
-   ```
-
-4. Inicie a aplicação:
-
-   ```sh
-   pnpm start:dev
-   ```
-
-5. Acesse a aplicação em `http://localhost:4200`.
 
 ## Estrutura do Banco de Dados
 

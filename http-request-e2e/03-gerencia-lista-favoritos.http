@@ -1,0 +1,104 @@
+@baseUrl = http://localhost:4200
+@authToken = {{Autenticar.response.body.access_token}}
+@userId = {{Autenticar.response.body.user.id}}
+
+@productId = {{ObtemTodosProdutos.response.body.0.id}}
+@productId2 = {{ObtemTodosProdutos.response.body.1.id}}
+
+//  EXECUTE ESTE PRIMEIRO
+//-> Autenticar usuário inexistente
+//<- Credenciais inválidas - 401
+# @name Autenticar
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "lu@email.com",
+  "passwordHash": "123456"
+}
+
+###
+
+//-> Get na API externa
+//-> Consulta banco pra ver se existe produtos
+//<- Busca retorna vazia
+//-> Consulta API externa GET produtos
+//-> Salva lista de produtos no banco
+//<- Devolve lista de produtos - 200
+# @name ObtemTodosProdutos
+GET {{baseUrl}}/products/user/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+//-> Criar nova lista de favoritos
+//<- Lista de favoritos criada com sucesso - 201
+# @name CriarListaFavoritos
+POST {{baseUrl}}/favorite/user/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "title": "Lista de Favoritos",
+  "description": "Lista de favoritos da Lu"
+}
+
+###
+
+//-> Tenta criar mais lista (Permitido apenas uma lista por usuário)
+//<- Já existe uma lista de favoritos para este usuário - 400
+# @name ErroLimiteCriaçãoListaFavoritos
+POST {{baseUrl}}/favorite/user/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "title": "Lista de Favoritos",
+  "description": "Lista de favoritos da Lu"
+}
+
+###
+
+//-> Get lista de favoritos do usuário
+//<- Lista de favoritos do usuário - 200
+# @name ObtemListaUsuario
+GET {{baseUrl}}/favorite/user/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+//-> Adiciona produto na lista de favoritos
+//<- Produto adicionado com sucesso - 201
+# @name AdicionaProdutoPrimeiroProdutoNaLista
+POST {{baseUrl}}/favorite/{{userId}}/product/{{productId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+//-> Tenta adicionar produto que já está na lista de favoritos
+//<- Produto já está na lista de favoritos - 400
+# @name ErroProdutoJaEstaNaLista
+POST {{baseUrl}}/favorite/{{userId}}/product/{{productId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+//-> Adiciona segundo produto na lista de favoritos
+//<- Produto adicionado com sucesso - 201
+# @name AdicionaProdutoSegundoProdutoNaLista
+POST {{baseUrl}}/favorite/{{userId}}/product/{{productId2}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+//-> Tenta adicionar produto inexistente na lista de favoritos
+//<- Produto não encontrado - 404
+# @name ErroAdicionarProdutoInexistenteNaLista
+POST {{baseUrl}}/favorite/{{userId}}/product/123456
+Content-Type: application/json
+Authorization: Bearer {{authToken}}

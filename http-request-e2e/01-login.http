@@ -1,0 +1,42 @@
+@baseUrl = http://localhost:4200
+@authToken = {{authenticate.response.body.access_token}}
+@userId = {{authenticate.response.body.user.id}}
+
+//-> Criar nova conta
+//<- Usuário criado com sucesso - 201
+# @name create_account
+POST {{baseUrl}}/accounts
+Content-Type: application/json
+
+{
+  "name": "Lu do Magalu",
+  "email": "lu@domagalu.com",
+  "passwordHash": "123456"
+}
+
+###
+
+//-> Autenticar usuário inexistente
+//<- Credenciais inválidas - 401
+# @name authenticate
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "inexistente@email.com",
+  "passwordHash": "123456"
+}
+
+###
+
+//-> Autenticar usuário existente
+//<- Atuenticado com sucesso - 401
+//<- {access_token, user: {id, name, email}}
+# @name authenticate
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "lu@domagalu.com",
+  "passwordHash": "123456"
+}

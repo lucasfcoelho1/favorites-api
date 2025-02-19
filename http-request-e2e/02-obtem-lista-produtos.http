@@ -1,0 +1,27 @@
+@baseUrl = http://localhost:4200
+@authToken = {{Autenticar.response.body.access_token}}
+@userId = {{Autenticar.response.body.user.id}}
+
+//  EXECUTE ESTE PRIMEIRO
+//-> Autenticar usuário inexistente
+//<- Credenciais inválidas - 401
+# @name Autenticar
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "lu@domagalu.com",
+  "passwordHash": "123456"
+}
+###
+
+//-> Get na API externa
+//-> Consulta banco pra ver se existe produtos
+//<- Busca retorna vazia
+//-> Consulta API externa GET produtos
+//-> Salva lista de produtos no banco
+//<- Devolve lista de produtos - 200
+# @name ObtemTodosProdutos
+GET {{baseUrl}}/products/user/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
