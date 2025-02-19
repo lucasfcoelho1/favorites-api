@@ -10,7 +10,6 @@ jobs:
         uses: actions/setup-node@v2
       - name: Install, Build and Test
         run: |
-          apt-get install -y openssl
           npm i -g pnpm 
           pnpm install --force --no-frozen-lockfile
           pnpm run build
