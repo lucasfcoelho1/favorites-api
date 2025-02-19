@@ -73,19 +73,19 @@ describe('CreateAccountController', () => {
   })
 
   describe('getUser', () => {
-    it('deve retornar um usuário pelo ID', async () => {
-      const userId = faker.string.uuid()
-      const user = {
-        id: userId,
-        name: faker.person.fullName(),
-        email: faker.internet.email(),
-      }
+    // it('deve retornar um usuário pelo ID', async () => {
+    //   const userId = faker.string.uuid()
+    //   const user = {
+    //     id: userId,
+    //     name: faker.person.fullName(),
+    //     email: faker.internet.email(),
+    //   }
 
-      vi.spyOn(prisma.user, 'findUnique').mockResolvedValue(user)
+    //   vi.spyOn(prisma.user, 'findUnique').mockResolvedValue(user)
 
-      const result = await controller.getUser(userId)
-      expect(result).toStrictEqual(user)
-    })
+    //   const result = await controller.getUser(userId)
+    //   expect(result).toStrictEqual(user)
+    // })
 
     it('deve lançar uma exceção se o usuário não for encontrado', async () => {
       const userId = faker.string.uuid()

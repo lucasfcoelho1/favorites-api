@@ -10,6 +10,8 @@ async function bootstrap() {
   const configService = app.get(EnvService)
   const port = configService.get('PORT')
 
-  await app.listen(port)
+  await app.listen(port, () => {
+    console.log(`Favorites API em PORTA => :${port}`)
+  })
 }
 bootstrap()

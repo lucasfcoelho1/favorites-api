@@ -1,15 +1,41 @@
-version: '3.8'
-
 services:
-  postgres:
-    container_name: favorites-api-postgres
+  db:
     image: postgres
-    ports:
-      - 5432:5432
+    container_name: favorites-api-postgres
+    hostname: favorites-api-postgres
+    restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: docker
-      POSTGRES_DB: favorites-api
-      PGDATA: /data/postgres
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
     volumes:
-      - ./data/pg:/data/postgres
+    - ./data/pg:/data/postgres
+    command: postgres -c listen_addresses='*'
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+
+  app:
+    build: .
+    container_name: favorites-api
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${PORT}:${PORT}"
+    networks:
+      - app-network
+    tty: true
+    stdin_open: true
+    env_file:
+    - .env
+
+networks:
+  app-network:
+
