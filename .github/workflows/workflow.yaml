@@ -1,0 +1,16 @@
+name: Continuos Integration
+on: pull_request
+jobs:
+  continuos-integration:
+    runs-on: ubuntu-latest
+    steps:  
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup environment
+        uses: actions/setup-node@v2
+      - name: Install, Build and Test
+        run: |
+          npm install -g pnpm 
+          pnpm install
+          pnpm test
+    
