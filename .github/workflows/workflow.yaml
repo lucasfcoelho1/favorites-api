@@ -12,6 +12,7 @@ jobs:
         run: |
           npm i -g pnpm 
           pnpm install --force --no-frozen-lockfile
+          pnpm prisma generate
           pnpm run build
           pnpm test
     
