@@ -46,6 +46,36 @@ Para executar a aplicação, você precisará ter o Docker 🐳 instalado na sua
 
 A documentação completa com Swagger da API está disponível em `http://localhost:4200/api`.
 
+
+## Testes e Cobertura de Código
+
+### Testes
+
+Os testes foram escritos utilizando o framework [Vitest](https://vitest.dev/). Para executar os testes, utilize os seguintes comandos:
+
+- Executar os testes de unidade:
+
+  ```sh
+  pnpm test
+  ```
+
+- Executar os testes com cobertura de código:
+
+  ```sh
+  pnpm test:cov
+  ```
+
+- Executar os testes E2E:
+  ```sh
+  pnpm test:e2e
+  ```
+
+### Cobertura de Código
+
+Toda vez que é executado os resultados da última execução dos testes com cobertura de código são dispostos no terminal e também são salvos em um arquivo em:
+
+['/coverage/index.html': Abra-o na sua máquina](/coverage/index.html)
+
 ### Executando a Aplicação Localmente
 
 Se você preferir executar a aplicação diretamente na sua máquina, siga os passos abaixo. Recomendo fortemente o uso do `pnpm` para gerenciar as dependências.
@@ -279,31 +309,4 @@ A aplicação utiliza um banco de dados PostgreSQL com as seguintes tabelas e re
 - **Respostas**:
   - `200`: Todos os produtos foram deletados com sucesso.
 
-## Testes e Cobertura de Código
 
-### Testes
-
-Os testes foram escritos utilizando o framework [Vitest](https://vitest.dev/). Para executar os testes, utilize os seguintes comandos:
-
-- Executar os testes de unidade:
-
-  ```sh
-  pnpm test
-  ```
-
-- Executar os testes com cobertura de código:
-
-  ```sh
-  pnpm test:cov
-  ```
-
-- Executar os testes E2E:
-  ```sh
-  pnpm test:e2e
-  ```
-
-### Cobertura de Código
-
-Toda vez que é executado os resultados da última execução dos testes com cobertura de código são dispostos no terminal e também são salvos em um arquivo em:
-
-['/coverage/index.html': Abra-o na sua máquina](/coverage/index.html)
