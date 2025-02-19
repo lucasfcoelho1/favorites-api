@@ -10,6 +10,7 @@ import { compare } from 'bcryptjs'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { z } from 'zod'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 const authenticateBodySchema = z.object({
   email: z.string().email(),
@@ -18,12 +19,19 @@ const authenticateBodySchema = z.object({
 
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 
+@ApiTags('sessions')
 @Controller('sessions')
 export class AuthenticateController {
   constructor(private prisma: PrismaService, private jwt: JwtService) {}
 
   @Post()
   @UsePipes(new ZodValidationPipe(authenticateBodySchema))
+  @ApiOperation({ summary: 'Autenticar um usuário' })
+  @ApiResponse({ status: 201, description: 'Usuário autenticado com sucesso.' })
+  @ApiResponse({
+    status: 401,
+    description: 'As credenciais do usuário não correspondem.',
+  })
   async handle(@Body() body: AuthenticateBodySchema) {
     const { email, passwordHash } = body
 

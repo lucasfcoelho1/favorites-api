@@ -6,7 +6,6 @@
   "private": true,
   "license": "UNLICENSED",
   "main": "dist/src/main.js",
-  
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -31,6 +30,7 @@
     "@nestjs/microservices": "^11.0.9",
     "@nestjs/passport": "^10.0.1",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^11.0.3",
     "@prisma/client": "^5.22.0",
     "amqp-connection-manager": "^4.1.14",
     "amqplib": "^0.10.5",
